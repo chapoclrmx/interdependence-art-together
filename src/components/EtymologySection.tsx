@@ -23,9 +23,7 @@ const EtymologySection = () => {
           Latin — "To hang from"
         </p>
 
-        <div className="mx-auto my-10 h-[1px] w-16 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
-        <p className="font-body text-lg leading-relaxed text-secondary-foreground/80 md:text-xl md:leading-relaxed">
+        <p className="mt-10 font-body text-lg leading-relaxed text-secondary-foreground/80 md:text-xl md:leading-relaxed">
           In this space, art doesn't stand alone. We hang on the lips, hands, and
           presence of others. To see the work, we must accept our dependence on
           whoever is connected to us in this moment.
