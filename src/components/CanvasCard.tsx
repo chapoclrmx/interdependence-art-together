@@ -59,17 +59,9 @@ const CanvasCard = ({ id, title, subtitle, imageUrl, occupied, total, isBlank }:
         )}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex -space-x-1">
-              {Array.from({ length: Math.min(occupied, 4) }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-primary node-pulse"
-                  style={{ animationDelay: `${i * 0.3}s` }}
-                />
-              ))}
-            </div>
+            <div className="h-1.5 w-1.5 rounded-full bg-primary node-pulse" />
             <span className="font-body text-xs text-muted-foreground">
-              {occupied}/{total}
+              {occupied} active
             </span>
           </div>
           <span className="font-display text-[10px] uppercase tracking-[0.2em] text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
