@@ -6,12 +6,13 @@ interface CanvasCardProps {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  hoverImageUrl?: string;
   occupied: number;
   total: number;
   isBlank?: boolean;
 }
 
-const CanvasCard = ({ id, title, subtitle, imageUrl, occupied, total, isBlank }: CanvasCardProps) => {
+const CanvasCard = ({ id, title, subtitle, imageUrl, hoverImageUrl, occupied, total, isBlank }: CanvasCardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -35,11 +36,20 @@ const CanvasCard = ({ id, title, subtitle, imageUrl, occupied, total, isBlank }:
         ) : (
           <>
             {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={title}
-                className="h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-90"
-              />
+              <>
+                <img
+                  src={imageUrl}
+                  alt={title}
+                  className={`h-full w-full object-cover opacity-70 transition-opacity duration-500 ${hoverImageUrl ? 'group-hover:opacity-0' : 'group-hover:opacity-90'}`}
+                />
+                {hoverImageUrl && (
+                  <img
+                    src={hoverImageUrl}
+                    alt={`${title} - hover`}
+                    className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-90"
+                  />
+                )}
+              </>
             )}
             {/* Missing silhouette overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
