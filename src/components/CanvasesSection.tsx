@@ -8,6 +8,7 @@ const canvases = [
     title: "The Birth of Venus",
     subtitle: "Botticelli, 1485 — Missing: The Wind Gods",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1280px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg",
+    hoverImageUrl: venusHover,
     occupied: 3,
     total: 10,
   },
