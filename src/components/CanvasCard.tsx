@@ -6,6 +6,7 @@ interface CanvasCardProps {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  hoverImageUrl?: string;
   occupied: number;
   total: number;
   isBlank?: boolean;
