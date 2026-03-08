@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import CanvasCard from "./CanvasCard";
+import venusHover from "@/assets/venus-hover.png";
 
 const canvases = [
   {
