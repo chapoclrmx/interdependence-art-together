@@ -2,12 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import WorldMap from "../components/WorldMap";
+import venusHover from "@/assets/venus-hover.png";
 
-const canvasData: Record<string, { title: string; subtitle: string; imageUrl?: string; isBlank?: boolean }> = {
+const canvasData: Record<string, { title: string; subtitle: string; imageUrl?: string; inspirationUrl?: string; isBlank?: boolean }> = {
   venus: {
     title: "The Birth of Venus",
     subtitle: "Botticelli, 1485",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1280px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg",
+    inspirationUrl: venusHover,
   },
   nighthawks: {
     title: "Nighthawks",
@@ -176,6 +178,27 @@ const CanvasView = () => {
             </div>
           )}
         </motion.div>
+
+        {/* Inspiration photo */}
+        {canvas.inspirationUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-4"
+          >
+            <p className="text-center font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              Inspired Recreation
+            </p>
+            <div className="overflow-hidden rounded-sm border border-border">
+              <img
+                src={canvas.inspirationUrl}
+                alt={`${canvas.title} — inspired recreation`}
+                className="w-full object-cover"
+              />
+            </div>
+          </motion.div>
+        )}
 
         {/* The Chain - World Map */}
         <motion.div
