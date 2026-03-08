@@ -12,7 +12,7 @@ interface CanvasCardProps {
   isBlank?: boolean;
 }
 
-const CanvasCard = ({ id, title, subtitle, imageUrl, occupied, total, isBlank }: CanvasCardProps) => {
+const CanvasCard = ({ id, title, subtitle, imageUrl, hoverImageUrl, occupied, total, isBlank }: CanvasCardProps) => {
   const navigate = useNavigate();
 
   return (
