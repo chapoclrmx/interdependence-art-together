@@ -179,6 +179,27 @@ const CanvasView = () => {
           )}
         </motion.div>
 
+        {/* Inspiration photo */}
+        {canvas.inspirationUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-4"
+          >
+            <p className="text-center font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              Inspired Recreation
+            </p>
+            <div className="overflow-hidden rounded-sm border border-border">
+              <img
+                src={canvas.inspirationUrl}
+                alt={`${canvas.title} — inspired recreation`}
+                className="w-full object-cover"
+              />
+            </div>
+          </motion.div>
+        )}
+
         {/* The Chain - World Map */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
