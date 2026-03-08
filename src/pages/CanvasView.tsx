@@ -2,12 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import WorldMap from "../components/WorldMap";
+import venusHover from "@/assets/venus-hover.png";
 
-const canvasData: Record<string, { title: string; subtitle: string; imageUrl?: string; isBlank?: boolean }> = {
+const canvasData: Record<string, { title: string; subtitle: string; imageUrl?: string; inspirationUrl?: string; isBlank?: boolean }> = {
   venus: {
     title: "The Birth of Venus",
     subtitle: "Botticelli, 1485",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1280px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg",
+    inspirationUrl: venusHover,
   },
   nighthawks: {
     title: "Nighthawks",
