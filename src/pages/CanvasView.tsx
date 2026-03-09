@@ -139,7 +139,13 @@ const CanvasView = () => {
         >
           {canvas.isBlank ? (
             <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
-              {!cameraRequested ? (
+              {selectingCharacter && canvas.characters ? (
+                <CharacterSelect
+                  characters={canvas.characters}
+                  onSelect={handleCharacterSelected}
+                  onBack={() => setSelectingCharacter(false)}
+                />
+              ) : !selectedCharacter ? (
                 <div className="text-center">
                   <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-primary/20">
                     <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -161,21 +167,23 @@ const CanvasView = () => {
                 </div>
               ) : !cameraGranted ? (
                 <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
                   <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border border-primary/30 border-t-primary" />
                   <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Requesting access...
+                    Preparing as {selectedCharacter.name}...
                   </p>
                 </div>
               ) : (
                 <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <div className="h-3 w-3 rounded-full bg-primary node-pulse" />
                   </div>
                   <p className="font-display text-sm uppercase tracking-[0.2em] text-foreground">
-                    You are connected
+                    You are {selectedCharacter.name}
                   </p>
                   <p className="mt-2 font-body text-xs text-muted-foreground">
-                    The canvas evolves with each participant
+                    Strike the pose — the canvas evolves with you
                   </p>
                 </div>
               )}
