@@ -34,6 +34,12 @@ const canvasData: Record<string, CanvasData> = {
       { url: venusHover, author: "Group Beta", location: "Tokyo, Japan" },
       { url: venusHover, author: "Group Gamma", location: "Cape Town, South Africa" },
     ],
+    characters: [
+      { id: "venus", name: "Venus", description: "The goddess, center stage", emoji: "🧜‍♀️" },
+      { id: "zephyr", name: "Zephyr", description: "Wind god, flying left", emoji: "🌬️" },
+      { id: "chloris", name: "Chloris", description: "Nymph embracing Zephyr", emoji: "🌸" },
+      { id: "hora", name: "Hora", description: "Handmaiden with the cloak", emoji: "👗" },
+    ],
   },
   nighthawks: {
     title: "Nighthawks",
