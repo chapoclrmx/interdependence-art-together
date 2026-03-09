@@ -81,8 +81,19 @@ const CanvasView = () => {
   }
 
   const handleCameraRequest = () => {
-    setCameraRequested(true);
-    // Simulate camera permission dialog
+    if (canvas.characters && canvas.characters.length > 0) {
+      setSelectingCharacter(true);
+    } else {
+      // No characters defined, go straight to camera
+      setSelectedCharacter({ id: "default", name: "Participant", description: "", emoji: "📷" });
+      setTimeout(() => setCameraGranted(true), 1500);
+    }
+  };
+
+  const handleCharacterSelected = (character: CanvasCharacter) => {
+    setSelectingCharacter(false);
+    setSelectedCharacter(character);
+    // Simulate camera permission
     setTimeout(() => setCameraGranted(true), 1500);
   };
 
