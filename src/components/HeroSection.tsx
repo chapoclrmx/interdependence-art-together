@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const HeroSection = () => {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
       {/* Subtle ambient gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--glow)/0.04)_0%,_transparent_70%)]" />
       
@@ -11,14 +11,15 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="font-display text-[clamp(2rem,8vw,8rem)] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em] text-foreground px-4em] md:tracking-[0.3em] text-foreground px-4"
+          className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-wider sm:tracking-widest md:tracking-[0.3em] text-foreground"
         >
           Interdependence
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.5em] text-muted-foreground px-4rcase tracking-[0.5em] text-muted-foreground"
+          transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+          className="mt-4 font-body text-xs sm:text-sm uppercase tracking-widest sm:tracking-[0.5em] text-muted-foreground"
         >
           Relying on each other
         </motion.p>
