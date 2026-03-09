@@ -197,30 +197,53 @@ const CanvasView = () => {
           )}
         </motion.div>
 
-        {/* Camera button - outside the canvas */}
+        {/* Character selection or camera button - outside the canvas */}
         {!canvas.isBlank && !cameraGranted && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex justify-center"
-          >
-            {!cameraRequested ? (
-              <button
-                onClick={handleCameraRequest}
-                className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+          <AnimatePresence mode="wait">
+            {selectingCharacter && canvas.characters ? (
+              <motion.div
+                key="char-select"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
               >
-                Join this canvas — Enable Camera
-              </button>
+                <CharacterSelect
+                  characters={canvas.characters}
+                  onSelect={handleCharacterSelected}
+                  onBack={() => setSelectingCharacter(false)}
+                />
+              </motion.div>
+            ) : !selectedCharacter ? (
+              <motion.div
+                key="join-btn"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ delay: 0.5 }}
+                className="flex justify-center"
+              >
+                <button
+                  onClick={handleCameraRequest}
+                  className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+                >
+                  Join this canvas — Choose your character
+                </button>
+              </motion.div>
             ) : (
-              <div className="flex items-center gap-3">
+              <motion.div
+                key="connecting"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center justify-center gap-3"
+              >
+                <span className="text-lg">{selectedCharacter.emoji}</span>
                 <div className="h-5 w-5 animate-spin rounded-full border border-primary/30 border-t-primary" />
                 <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Connecting...
+                  Connecting as {selectedCharacter.name}...
                 </p>
-              </div>
+              </motion.div>
             )}
-          </motion.div>
+          </AnimatePresence>
         )}
 
         {/* Inspiration carousel */}
