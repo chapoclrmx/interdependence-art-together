@@ -84,33 +84,28 @@ const WorldMap = ({ activeGroupIndex = 0 }: WorldMapProps) => {
                 x2={nextUser.x}
                 y2={nextUser.y}
                 stroke="hsl(var(--primary))"
-                strokeWidth={0.8}
-                className="line-glow"
-                style={{ filter: 'drop-shadow(0 0 8px hsl(var(--primary) / 0.9))' }}
+                strokeWidth={0.3}
               />
             );
           })}
 
           {/* User nodes - static */}
-          {activeUsers.map((user, i) => (
+          {activeUsers.map((user) => (
             <g key={`node-${activeGroupIndex}-${user.id}`}>
               {/* Outer glow */}
               <circle
                 cx={user.x}
                 cy={user.y}
-                r={3}
+                r={2.5}
                 fill="hsl(var(--primary))"
-                opacity={0.3}
-                style={{ filter: 'blur(1px)' }}
+                opacity={0.25}
               />
               {/* Inner dot */}
               <circle
                 cx={user.x}
                 cy={user.y}
-                r={1.5}
+                r={1.2}
                 fill="hsl(var(--primary))"
-                className="node-pulse"
-                style={{ animationDelay: `${i * 0.4}s` }}
               />
             </g>
           ))}
