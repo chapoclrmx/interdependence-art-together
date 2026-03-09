@@ -9,12 +9,9 @@ interface ConnectedUser {
 }
 
 const mockUsers: ConnectedUser[] = [
-  { id: "1", name: "Aiko M.", x: 78, y: 38 },
-  { id: "2", name: "Lena S.", x: 48, y: 28 },
-  { id: "3", name: "Marco R.", x: 50, y: 42 },
-  { id: "4", name: "Priya K.", x: 68, y: 50 },
-  { id: "5", name: "Sofia V.", x: 30, y: 35 },
-  { id: "6", name: "Yusuf A.", x: 55, y: 35 },
+  { id: "1", name: "Aiko M.", x: 78, y: 55 },      // Australia
+  { id: "2", name: "Lena S.", x: 48, y: 28 },      // Europe
+  { id: "3", name: "Sofia V.", x: 25, y: 32 },     // North America
 ];
 
 // Simple dot-map world outline (SVG viewBox coordinates mapped to percentages)
