@@ -31,7 +31,7 @@ const CharacterSelect = ({ characters, onSelect, onBack }: CharacterSelectProps)
         Select the figure whose pose you want to recreate
       </p>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 md:grid-cols-4 px-2 sm:px-0">
         {characters.map((char, i) => (
           <motion.button
             key={char.id}
