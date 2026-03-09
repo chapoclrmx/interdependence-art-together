@@ -98,11 +98,11 @@ const CanvasView = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
+    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opac8 sm:mb-ity: 1 }}
       8 sm:mb-  className="mb-12 flex items-center justify-between"
       >
         <button
@@ -116,7 +116,7 @@ const CanvasView = () => {
         </p>
       </motion.div>
 
-      <div className="mx-auto max-w-5xl space-y-12">
+      <div className="mx8 sm:space-y--auto max-w-5xl space-y-12">
         {/* Canvas title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
