@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import worldMapBg from "@/assets/world-map-bg.png";
 
 interface ConnectedUser {
   id: string;
