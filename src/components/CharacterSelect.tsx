@@ -31,7 +31,7 @@ const CharacterSelect = ({ characters, onSelect, onBack }: CharacterSelectProps)
         Select the figure whose pose you want to recreate
       </p>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 md:grid-cols-4 px-2 sm:px-0id-cols-4 px-2 sm:px-0">
         {characters.map((char, i) => (
           <motion.button
             key={char.id}
@@ -41,7 +41,7 @@ const CharacterSelect = ({ characters, onSelect, onBack }: CharacterSelectProps)
             onClick={() => onSelect(char)}
             onMouseEnter={() => setHoveredId(char.id)}
             onMouseLeave={() => setHoveredId(null)}
-            className="group flex flex-col items-center gap-3 rounded-sm border border-border bg-card p-5 transition-all hover:border-primary/40 hover:bg-primary/5"
+            className="group flex flex2 sm:gap-3 rounded-sm border border-border bg-card p-3 sm:border-border bg-card p-5 transition-all hover:border-primary/40 hover:bg-primary/5"
           >
             <span className="text-3xl transition-transform group-hover:scale-110">
               {char.emoji}

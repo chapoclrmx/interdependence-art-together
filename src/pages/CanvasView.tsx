@@ -73,7 +73,7 @@ const CanvasView = () => {
   if (!canvas) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="font-display text-sm uppercase tracking-[0.3em] text-muted-foreground">
+        <p className="font-display text-sm uppercase tracking-widest text-muted-foreground">
           Canvas not found
         </p>
       </div>
@@ -84,7 +84,6 @@ const CanvasView = () => {
     if (canvas.characters && canvas.characters.length > 0) {
       setSelectingCharacter(true);
     } else {
-      // No characters defined, go straight to camera
       setSelectedCharacter({ id: "default", name: "Participant", description: "", emoji: "📷" });
       setTimeout(() => setCameraGranted(true), 1500);
     }
@@ -93,30 +92,29 @@ const CanvasView = () => {
   const handleCharacterSelected = (character: CanvasCharacter) => {
     setSelectingCharacter(false);
     setSelectedCharacter(character);
-    // Simulate camera permission
     setTimeout(() => setCameraGranted(true), 1500);
   };
 
   return (
-    <div className="min-h-screen px-6 py-8 md:px-12 lg:px-24">
+    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="mb-12 flex items-center justify-between"
+        className="mb-8 sm:mb-12 flex items-center justify-between"
       >
         <button
           onClick={() => navigate("/")}
-          className="font-display text-xs uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-foreground"
+          className="font-display text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
         >
           ← Back
         </button>
-        <p className="font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
+        <p className="font-display text-xs uppercase tracking-widest text-muted-foreground">
           Live Canvas
         </p>
       </motion.div>
 
-      <div className="mx-auto max-w-5xl space-y-12">
+      <div className="mx-auto max-w-5xl space-y-8 sm:space-y-12">
         {/* Canvas title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -124,7 +122,7 @@ const CanvasView = () => {
           transition={{ delay: 0.2 }}
           className="text-center"
         >
-          <h1 className="font-display text-2xl font-light uppercase tracking-[0.2em] text-foreground md:text-4xl">
+          <h1 className="font-display text-xl sm:text-2xl font-light uppercase tracking-wider sm:tracking-[0.2em] text-foreground md:text-4xl">
             {canvas.title}
           </h1>
           <p className="mt-2 font-body text-xs text-muted-foreground">{canvas.subtitle}</p>
@@ -138,7 +136,7 @@ const CanvasView = () => {
           className="relative overflow-hidden rounded-sm border border-border"
         >
           {canvas.isBlank ? (
-            <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
+            <div className="flex aspect-[4/3] sm:aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
               {selectingCharacter && canvas.characters ? (
                 <CharacterSelect
                   characters={canvas.characters}
@@ -146,21 +144,21 @@ const CanvasView = () => {
                   onBack={() => setSelectingCharacter(false)}
                 />
               ) : !selectedCharacter ? (
-                <div className="text-center">
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-primary/20">
-                    <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center px-4">
+                  <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full border border-primary/20">
+                    <svg className="h-5 w-5 sm:h-6 sm:w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <p className="mb-2 font-display text-sm uppercase tracking-[0.2em] text-foreground">
+                  <p className="mb-2 font-display text-xs sm:text-sm uppercase tracking-wider sm:tracking-[0.2em] text-foreground">
                     Your presence is required
                   </p>
-                  <p className="mb-6 font-body text-xs text-muted-foreground">
+                  <p className="mb-4 sm:mb-6 font-body text-[10px] sm:text-xs text-muted-foreground">
                     Enable your camera to become part of the work
                   </p>
                   <button
                     onClick={handleCameraRequest}
-                    className="rounded-sm border border-primary/30 bg-primary/10 px-6 py-2.5 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/20 hover:border-glow"
+                    className="rounded-sm border border-primary/30 bg-primary/10 px-4 sm:px-6 py-2 sm:py-2.5 font-display text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.2em] text-primary transition-all hover:bg-primary/20 hover:border-glow"
                   >
                     Enable Camera
                   </button>
@@ -169,7 +167,7 @@ const CanvasView = () => {
                 <div className="text-center">
                   <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
                   <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border border-primary/30 border-t-primary" />
-                  <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <p className="font-display text-xs uppercase tracking-wider text-muted-foreground">
                     Preparing as {selectedCharacter.name}...
                   </p>
                 </div>
@@ -179,7 +177,7 @@ const CanvasView = () => {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <div className="h-3 w-3 rounded-full bg-primary node-pulse" />
                   </div>
-                  <p className="font-display text-sm uppercase tracking-[0.2em] text-foreground">
+                  <p className="font-display text-sm uppercase tracking-wider text-foreground">
                     You are {selectedCharacter.name}
                   </p>
                   <p className="mt-2 font-body text-xs text-muted-foreground">
@@ -224,7 +222,7 @@ const CanvasView = () => {
               >
                 <button
                   onClick={handleCameraRequest}
-                  className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+                  className="rounded-sm border border-primary/30 bg-card px-4 sm:px-8 py-3 sm:py-4 font-display text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
                 >
                   Join this canvas — Choose your character
                 </button>
@@ -238,7 +236,7 @@ const CanvasView = () => {
               >
                 <span className="text-lg">{selectedCharacter.emoji}</span>
                 <div className="h-5 w-5 animate-spin rounded-full border border-primary/30 border-t-primary" />
-                <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                <p className="font-display text-xs uppercase tracking-wider text-muted-foreground">
                   Connecting as {selectedCharacter.name}...
                 </p>
               </motion.div>

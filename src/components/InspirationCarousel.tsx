@@ -40,18 +40,18 @@ const InspirationCarousel = ({ images, onSlideChange }: InspirationCarouselProps
         {/* Navigation buttons */}
         <button
           onClick={goToPrevious}
-          className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-4 rounded-full border border-border bg-card/90 p-2 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/10"
+          className="absolute left-1 sm:left-0 top-1/2 z-10 -translate-y-1/2 sm:-translate-x-4 rounded-full border border-border bg-card/90 p-1.5 sm:p-2 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/10"
           aria-label="Previous image"
         >
-          <ChevronLeft className="h-5 w-5 text-muted-foreground" />
+          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
         </button>
 
         <button
           onClick={goToNext}
-          className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-4 rounded-full border border-border bg-card/90 p-2 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/10"
+          className="absolute right-1 sm:right-0 top-1/2 z-10 -translate-y-1/2 sm:translate-x-4 rounded-full border border-border bg-card/90 p-1.5 sm:p-2 backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/10"
           aria-label="Next image"
         >
-          <ChevronRight className="h-5 w-5 text-muted-foreground" />
+          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
         </button>
 
         {/* Image container */}
