@@ -48,6 +48,7 @@ const CanvasView = () => {
   const navigate = useNavigate();
   const [cameraRequested, setCameraRequested] = useState(false);
   const [cameraGranted, setCameraGranted] = useState(false);
+  const [activeInspirationIndex, setActiveInspirationIndex] = useState(0);
 
   const canvas = id ? canvasData[id] : null;
 
