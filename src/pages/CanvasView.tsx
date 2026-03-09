@@ -4,6 +4,7 @@ import { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import InspirationCarousel from "../components/InspirationCarousel";
 import venusHover from "@/assets/venus-hover.png";
+import communityRooftop from "@/assets/community-rooftop.png";
 
 interface CanvasData {
   title: string;
