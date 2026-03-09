@@ -2,14 +2,27 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import WorldMap from "../components/WorldMap";
+import InspirationCarousel from "../components/InspirationCarousel";
 import venusHover from "@/assets/venus-hover.png";
 
-const canvasData: Record<string, { title: string; subtitle: string; imageUrl?: string; inspirationUrl?: string; isBlank?: boolean }> = {
+interface CanvasData {
+  title: string;
+  subtitle: string;
+  imageUrl?: string;
+  inspirations?: { url: string; author: string; location: string }[];
+  isBlank?: boolean;
+}
+
+const canvasData: Record<string, CanvasData> = {
   venus: {
     title: "The Birth of Venus",
     subtitle: "Botticelli, 1485",
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1280px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg",
-    inspirationUrl: venusHover,
+    inspirations: [
+      { url: venusHover, author: "Group Alpha", location: "Sydney, Australia" },
+      { url: venusHover, author: "Group Beta", location: "Tokyo, Japan" },
+      { url: venusHover, author: "Group Gamma", location: "Cape Town, South Africa" },
+    ],
   },
   nighthawks: {
     title: "Nighthawks",
@@ -35,6 +48,7 @@ const CanvasView = () => {
   const navigate = useNavigate();
   const [cameraRequested, setCameraRequested] = useState(false);
   const [cameraGranted, setCameraGranted] = useState(false);
+  const [activeInspirationIndex, setActiveInspirationIndex] = useState(0);
 
   const canvas = id ? canvasData[id] : null;
 
@@ -172,24 +186,17 @@ const CanvasView = () => {
           </motion.div>
         )}
 
-        {/* Inspiration photo */}
-        {canvas.inspirationUrl && (
+        {/* Inspiration carousel */}
+        {canvas.inspirations && canvas.inspirations.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="space-y-4"
           >
-            <p className="text-center font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
-              Inspired Recreation
-            </p>
-            <div className="overflow-hidden rounded-sm border border-border">
-              <img
-                src={canvas.inspirationUrl}
-                alt={`${canvas.title} — inspired recreation`}
-                className="w-full object-cover"
-              />
-            </div>
+            <InspirationCarousel 
+              images={canvas.inspirations} 
+              onSlideChange={setActiveInspirationIndex}
+            />
           </motion.div>
         )}
 
@@ -199,7 +206,7 @@ const CanvasView = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <WorldMap />
+          <WorldMap activeGroupIndex={activeInspirationIndex} />
         </motion.div>
       </div>
     </div>
