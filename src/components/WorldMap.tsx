@@ -49,7 +49,7 @@ const WorldMap = ({ activeGroupIndex = 0 }: WorldMapProps) => {
 
   return (
     <div 
-      className="relative w-full overflow-hidden rounded-sm border border-border p-8"
+      className="relative w-full overflow-hidden rounded-sm border border-border p-4 sm:p-8"
       style={{
         backgroundImage: `url(${worldMapBg})`,
         backgroundSize: 'contain',
