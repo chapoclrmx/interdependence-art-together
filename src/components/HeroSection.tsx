@@ -11,15 +11,14 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="font-display text-[clamp(2rem,8vw,8rem)] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em] text-foreground px-4"
+          className="font-display text-[clamp(2rem,8vw,8rem)] font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em] text-foreground px-4em] md:tracking-[0.3em] text-foreground px-4"
         >
           Interdependence
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-          className="mt-4 font-body text-sm uppercase tracking-[0.5em] text-muted-foreground"
+          transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.5em] text-muted-foreground px-4rcase tracking-[0.5em] text-muted-foreground"
         >
           Relying on each other
         </motion.p>

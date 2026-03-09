@@ -74,11 +74,11 @@ const ManifestoSection = () => {
       {/* Bottom separator */}
       <div className="mx-auto mt-32 max-w-6xl">
         <div className="h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />
-        <div className="mt-12 flex items-center justify-between">
-          <p className="font-display text-xs uppercase tracking-[0.3em] text-text-dim">
+        <div className="mt-12 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+          <p className="font-display text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground">
             Interdependence © 2026
           </p>
-          <p className="font-display text-xs uppercase tracking-[0.3em] text-text-dim">
+          <p className="font-display text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground">
             Art is collective
           </p>
         </div>

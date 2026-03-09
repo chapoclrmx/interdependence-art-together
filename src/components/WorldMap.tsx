@@ -58,8 +58,8 @@ const WorldMap = ({ activeGroupIndex = 0 }: WorldMapProps) => {
         backgroundColor: 'white',
       }}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <p className="font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-display text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground">
           The Chain — Connected Users
         </p>
         <div className="flex items-center gap-2">
