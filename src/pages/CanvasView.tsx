@@ -7,12 +7,20 @@ import CharacterSelect from "../components/CharacterSelect";
 import venusHover from "@/assets/venus-hover.png";
 import communityRooftop from "@/assets/community-rooftop.png";
 
+interface CanvasCharacter {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+}
+
 interface CanvasData {
   title: string;
   subtitle: string;
   imageUrl?: string;
   inspirations?: { url: string; author: string; location: string }[];
   isBlank?: boolean;
+  characters?: CanvasCharacter[];
 }
 
 const canvasData: Record<string, CanvasData> = {
