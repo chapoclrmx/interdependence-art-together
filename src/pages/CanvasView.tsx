@@ -1,10 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import InspirationCarousel from "../components/InspirationCarousel";
+import CharacterSelect from "../components/CharacterSelect";
 import venusHover from "@/assets/venus-hover.png";
 import communityRooftop from "@/assets/community-rooftop.png";
+
+interface CanvasCharacter {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+}
 
 interface CanvasData {
   title: string;
@@ -12,6 +20,7 @@ interface CanvasData {
   imageUrl?: string;
   inspirations?: { url: string; author: string; location: string }[];
   isBlank?: boolean;
+  characters?: CanvasCharacter[];
 }
 
 const canvasData: Record<string, CanvasData> = {
@@ -24,6 +33,12 @@ const canvasData: Record<string, CanvasData> = {
       { url: communityRooftop, author: "Community Collective", location: "Chicago, USA" },
       { url: venusHover, author: "Group Beta", location: "Tokyo, Japan" },
       { url: venusHover, author: "Group Gamma", location: "Cape Town, South Africa" },
+    ],
+    characters: [
+      { id: "venus", name: "Venus", description: "The goddess, center stage", emoji: "🧜‍♀️" },
+      { id: "zephyr", name: "Zephyr", description: "Wind god, flying left", emoji: "🌬️" },
+      { id: "chloris", name: "Chloris", description: "Nymph embracing Zephyr", emoji: "🌸" },
+      { id: "hora", name: "Hora", description: "Handmaiden with the cloak", emoji: "👗" },
     ],
   },
   nighthawks: {
@@ -48,7 +63,8 @@ const canvasData: Record<string, CanvasData> = {
 const CanvasView = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [cameraRequested, setCameraRequested] = useState(false);
+  const [selectingCharacter, setSelectingCharacter] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState<CanvasCharacter | null>(null);
   const [cameraGranted, setCameraGranted] = useState(false);
   const [activeInspirationIndex, setActiveInspirationIndex] = useState(0);
 
@@ -65,8 +81,19 @@ const CanvasView = () => {
   }
 
   const handleCameraRequest = () => {
-    setCameraRequested(true);
-    // Simulate camera permission dialog
+    if (canvas.characters && canvas.characters.length > 0) {
+      setSelectingCharacter(true);
+    } else {
+      // No characters defined, go straight to camera
+      setSelectedCharacter({ id: "default", name: "Participant", description: "", emoji: "📷" });
+      setTimeout(() => setCameraGranted(true), 1500);
+    }
+  };
+
+  const handleCharacterSelected = (character: CanvasCharacter) => {
+    setSelectingCharacter(false);
+    setSelectedCharacter(character);
+    // Simulate camera permission
     setTimeout(() => setCameraGranted(true), 1500);
   };
 
@@ -112,7 +139,13 @@ const CanvasView = () => {
         >
           {canvas.isBlank ? (
             <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
-              {!cameraRequested ? (
+              {selectingCharacter && canvas.characters ? (
+                <CharacterSelect
+                  characters={canvas.characters}
+                  onSelect={handleCharacterSelected}
+                  onBack={() => setSelectingCharacter(false)}
+                />
+              ) : !selectedCharacter ? (
                 <div className="text-center">
                   <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-primary/20">
                     <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,21 +167,23 @@ const CanvasView = () => {
                 </div>
               ) : !cameraGranted ? (
                 <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
                   <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border border-primary/30 border-t-primary" />
                   <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    Requesting access...
+                    Preparing as {selectedCharacter.name}...
                   </p>
                 </div>
               ) : (
                 <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <div className="h-3 w-3 rounded-full bg-primary node-pulse" />
                   </div>
                   <p className="font-display text-sm uppercase tracking-[0.2em] text-foreground">
-                    You are connected
+                    You are {selectedCharacter.name}
                   </p>
                   <p className="mt-2 font-body text-xs text-muted-foreground">
-                    The canvas evolves with each participant
+                    Strike the pose — the canvas evolves with you
                   </p>
                 </div>
               )}
@@ -162,30 +197,53 @@ const CanvasView = () => {
           )}
         </motion.div>
 
-        {/* Camera button - outside the canvas */}
+        {/* Character selection or camera button - outside the canvas */}
         {!canvas.isBlank && !cameraGranted && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex justify-center"
-          >
-            {!cameraRequested ? (
-              <button
-                onClick={handleCameraRequest}
-                className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+          <AnimatePresence mode="wait">
+            {selectingCharacter && canvas.characters ? (
+              <motion.div
+                key="char-select"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
               >
-                Join this canvas — Enable Camera
-              </button>
+                <CharacterSelect
+                  characters={canvas.characters}
+                  onSelect={handleCharacterSelected}
+                  onBack={() => setSelectingCharacter(false)}
+                />
+              </motion.div>
+            ) : !selectedCharacter ? (
+              <motion.div
+                key="join-btn"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ delay: 0.5 }}
+                className="flex justify-center"
+              >
+                <button
+                  onClick={handleCameraRequest}
+                  className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+                >
+                  Join this canvas — Choose your character
+                </button>
+              </motion.div>
             ) : (
-              <div className="flex items-center gap-3">
+              <motion.div
+                key="connecting"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center justify-center gap-3"
+              >
+                <span className="text-lg">{selectedCharacter.emoji}</span>
                 <div className="h-5 w-5 animate-spin rounded-full border border-primary/30 border-t-primary" />
                 <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Connecting...
+                  Connecting as {selectedCharacter.name}...
                 </p>
-              </div>
+              </motion.div>
             )}
-          </motion.div>
+          </AnimatePresence>
         )}
 
         {/* Inspiration carousel */}
