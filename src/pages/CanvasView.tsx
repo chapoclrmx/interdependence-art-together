@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import InspirationCarousel from "../components/InspirationCarousel";
+import CharacterSelect from "../components/CharacterSelect";
 import venusHover from "@/assets/venus-hover.png";
 import communityRooftop from "@/assets/community-rooftop.png";
 
