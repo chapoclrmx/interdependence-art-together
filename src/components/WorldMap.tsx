@@ -22,21 +22,21 @@ interface ConnectedUser {
 const userGroups: ConnectedUser[][] = [
   // Group 1 - Australia, Europe, North America
   [
-    { id: "1", name: "Aiko M.", x: 85, y: 72, country: "Australia" },
-    { id: "2", name: "Lena S.", x: 52, y: 32, country: "Germany" },
-    { id: "3", name: "Sofia V.", x: 22, y: 35, country: "USA" },
+    { id: "1", name: "Aiko M.", x: 82, y: 65, country: "Australia" },
+    { id: "2", name: "Lena S.", x: 50, y: 25, country: "Germany" },
+    { id: "3", name: "Sofia V.", x: 18, y: 30, country: "USA" },
   ],
   // Group 2 - Brazil, Japan, UK
   [
-    { id: "4", name: "Lucas R.", x: 30, y: 62, country: "Brazil" },
-    { id: "5", name: "Yuki T.", x: 82, y: 38, country: "Japan" },
-    { id: "6", name: "Emma W.", x: 48, y: 28, country: "UK" },
+    { id: "4", name: "Lucas R.", x: 32, y: 55, country: "Brazil" },
+    { id: "5", name: "Yuki T.", x: 84, y: 30, country: "Japan" },
+    { id: "6", name: "Emma W.", x: 46, y: 22, country: "UK" },
   ],
   // Group 3 - India, Canada, South Africa
   [
-    { id: "7", name: "Priya K.", x: 70, y: 42, country: "India" },
-    { id: "8", name: "Marc D.", x: 18, y: 28, country: "Canada" },
-    { id: "9", name: "Thabo M.", x: 55, y: 68, country: "South Africa" },
+    { id: "7", name: "Priya K.", x: 68, y: 35, country: "India" },
+    { id: "8", name: "Marc D.", x: 16, y: 22, country: "Canada" },
+    { id: "9", name: "Thabo M.", x: 53, y: 58, country: "South Africa" },
   ],
 ];
 
