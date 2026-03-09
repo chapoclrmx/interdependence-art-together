@@ -1,5 +1,14 @@
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Users } from "lucide-react";
 import worldMapBg from "@/assets/world-map-bg.png";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface ConnectedUser {
   id: string;
@@ -46,7 +55,7 @@ const WorldMap = ({ activeGroupIndex = 0 }: WorldMapProps) => {
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: 'hsl(var(--card) / 0.9)',
+        backgroundColor: 'white',
       }}
     >
       <div className="mb-4 flex items-center justify-between">
@@ -64,89 +73,84 @@ const WorldMap = ({ activeGroupIndex = 0 }: WorldMapProps) => {
       <div className="relative aspect-[2/1] w-full">
         {/* SVG overlay for connections and nodes */}
         <svg viewBox="0 0 100 80" className="absolute inset-0 h-full w-full">
-          {/* Connection lines */}
-          <AnimatePresence mode="wait">
-            {activeUsers.map((user, i) => {
-              const nextUser = activeUsers[(i + 1) % activeUsers.length];
-              return (
-                <motion.line
-                  key={`line-${activeGroupIndex}-${user.id}`}
-                  initial={{ opacity: 0, pathLength: 0 }}
-                  animate={{ opacity: 1, pathLength: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  x1={user.x}
-                  y1={user.y}
-                  x2={nextUser.x}
-                  y2={nextUser.y}
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={0.4}
-                  className="line-glow"
-                  style={{ filter: 'drop-shadow(0 0 6px hsl(var(--primary) / 0.8))' }}
-                />
-              );
-            })}
-          </AnimatePresence>
+          {/* Connection lines - static */}
+          {activeUsers.map((user, i) => {
+            const nextUser = activeUsers[(i + 1) % activeUsers.length];
+            return (
+              <line
+                key={`line-${activeGroupIndex}-${user.id}`}
+                x1={user.x}
+                y1={user.y}
+                x2={nextUser.x}
+                y2={nextUser.y}
+                stroke="hsl(var(--primary))"
+                strokeWidth={0.8}
+                className="line-glow"
+                style={{ filter: 'drop-shadow(0 0 8px hsl(var(--primary) / 0.9))' }}
+              />
+            );
+          })}
 
-          {/* User nodes */}
-          <AnimatePresence mode="wait">
-            {activeUsers.map((user, i) => (
-              <motion.g 
-                key={`node-${activeGroupIndex}-${user.id}`}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.15 }}
-              >
-                {/* Outer glow */}
-                <circle
-                  cx={user.x}
-                  cy={user.y}
-                  r={2.5}
-                  fill="hsl(var(--primary))"
-                  opacity={0.25}
-                  style={{ filter: 'blur(1px)' }}
-                />
-                {/* Inner dot */}
-                <circle
-                  cx={user.x}
-                  cy={user.y}
-                  r={1}
-                  fill="hsl(var(--primary))"
-                  className="node-pulse"
-                  style={{ animationDelay: `${i * 0.4}s` }}
-                />
-              </motion.g>
-            ))}
-          </AnimatePresence>
-        </svg>
-
-        {/* Labels */}
-        <AnimatePresence mode="wait">
+          {/* User nodes - static */}
           {activeUsers.map((user, i) => (
-            <motion.div
-              key={`label-${activeGroupIndex}-${user.id}`}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.3, delay: 0.3 + i * 0.1 }}
-              className="pointer-events-none absolute rounded-sm border border-primary/20 bg-card/90 px-2 py-1 backdrop-blur-sm"
-              style={{
-                left: `${user.x}%`,
-                top: `${(user.y / 80) * 100 - 6}%`,
-                transform: "translateX(-50%)",
-              }}
-            >
-              <p className="font-display text-[9px] uppercase tracking-[0.15em] text-primary">
-                {user.name}
-              </p>
-              <p className="font-body text-[7px] text-muted-foreground">
-                {user.country}
-              </p>
-            </motion.div>
+            <g key={`node-${activeGroupIndex}-${user.id}`}>
+              {/* Outer glow */}
+              <circle
+                cx={user.x}
+                cy={user.y}
+                r={3}
+                fill="hsl(var(--primary))"
+                opacity={0.3}
+                style={{ filter: 'blur(1px)' }}
+              />
+              {/* Inner dot */}
+              <circle
+                cx={user.x}
+                cy={user.y}
+                r={1.5}
+                fill="hsl(var(--primary))"
+                className="node-pulse"
+                style={{ animationDelay: `${i * 0.4}s` }}
+              />
+            </g>
           ))}
-        </AnimatePresence>
+        </svg>
       </div>
+
+      {/* Participants button */}
+      <Dialog>
+        <DialogTrigger asChild>
+          <button className="absolute bottom-4 left-4 flex items-center gap-2 rounded-sm border border-border bg-card/90 px-3 py-2 font-display text-[10px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:text-foreground">
+            <Users className="h-3.5 w-3.5" />
+            Participants
+          </button>
+        </DialogTrigger>
+        <DialogContent className="bg-card/95 backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-sm uppercase tracking-[0.2em]">
+              Participants
+            </DialogTitle>
+          </DialogHeader>
+          <div className="mt-4 space-y-3">
+            {activeUsers.map((user) => (
+              <div
+                key={user.id}
+                className="flex items-center gap-3 rounded-sm border border-border/50 bg-background/50 p-3"
+              >
+                <div className="h-2 w-2 rounded-full bg-primary node-pulse" />
+                <div>
+                  <p className="font-display text-xs uppercase tracking-[0.15em] text-foreground">
+                    {user.name}
+                  </p>
+                  <p className="font-body text-[10px] text-muted-foreground">
+                    {user.country}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
