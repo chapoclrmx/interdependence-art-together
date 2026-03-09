@@ -98,10 +98,10 @@ const CanvasView = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
+    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opaci8 sm:mb-ty: 0 }}
        8 sm:mb- animate={{ opac8 sm:mb-ity: 1 }}
       8 sm:mb-  className="mb-12 flex items-center justify-between"
       >
@@ -113,7 +113,7 @@ const CanvasView = () => {
         </button>
         <p className="font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
           Live Canvas
-        </p>
+        </8 sm:space-y-p>
       </motion.div>
 
 8 sm:space-y-      <div className="mx8 sm:space-y--auto max-w-5xl space-y-12">
@@ -122,8 +122,7 @@ const CanvasView = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-center"
-        >
+          claxl sm:text-2xl font-light uppercase tracking-wider sm:    >
       xl sm:text-2xl font-light uppercase tracking-wider sm:isplay text-2xl font-light uppercase tracking-[0.2em] text-foreground md:text-4xl">
             {canvas.title}
           </h1>
@@ -137,7 +136,7 @@ const CanvasView = () => {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="relative overflow-hidden rounded-sm border border-border"
         >
-          {canvas.isBlank ? (
+    [4/3] sm:aspect-      {canvas.isBlank ? (
             <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
               {selectingCharacter && canvas.characters ? (
                 <CharacterSelect
