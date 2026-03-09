@@ -170,7 +170,7 @@ const CanvasView = () => {
               </div>
             )}
           </motion.div>
-        </motion.div>
+        )}
 
         {/* Inspiration photo */}
         {canvas.inspirationUrl && (
