@@ -63,7 +63,8 @@ const canvasData: Record<string, CanvasData> = {
 const CanvasView = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [cameraRequested, setCameraRequested] = useState(false);
+  const [selectingCharacter, setSelectingCharacter] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState<CanvasCharacter | null>(null);
   const [cameraGranted, setCameraGranted] = useState(false);
   const [activeInspirationIndex, setActiveInspirationIndex] = useState(0);
 
