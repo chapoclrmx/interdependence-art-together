@@ -22,7 +22,7 @@ interface ConnectedUser {
 const userGroups: ConnectedUser[][] = [
   // Group 1 - Australia, Europe, North America
   [
-    { id: "1", name: "Aiko M.", x: 80, y: 62, country: "Australia" },
+    { id: "1", name: "Aiko M.", x: 75, y: 62, country: "Australia" },
     { id: "2", name: "Lena S.", x: 52, y: 26, country: "Germany" },
     { id: "3", name: "Sofia V.", x: 20, y: 32, country: "USA" },
   ],
