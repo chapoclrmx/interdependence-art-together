@@ -138,46 +138,39 @@ const CanvasView = () => {
               )}
             </div>
           ) : (
-            <div className="relative">
-              <img
-                src={canvas.imageUrl}
-                alt={canvas.title}
-                className="w-full object-cover"
-              />
-              {/* Silhouette overlays */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex gap-6">
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-24 w-16 rounded-t-full border border-dashed border-primary/20 bg-background/30 backdrop-blur-sm md:h-40 md:w-24"
-                    />
-                  ))}
-                </div>
-              </div>
-              {/* Camera prompt overlay */}
-              {!cameraGranted && (
-                <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-background/80 to-transparent pb-12">
-                  {!cameraRequested ? (
-                    <button
-                      onClick={handleCameraRequest}
-                      className="rounded-sm border border-primary/30 bg-card/80 px-6 py-3 font-display text-xs uppercase tracking-[0.2em] text-primary backdrop-blur-sm transition-all hover:bg-primary/10"
-                    >
-                      Fill a silhouette — Enable Camera
-                    </button>
-                  ) : (
-                    <div className="flex items-center gap-3">
-                      <div className="h-5 w-5 animate-spin rounded-full border border-primary/30 border-t-primary" />
-                      <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        Connecting...
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+            <img
+              src={canvas.imageUrl}
+              alt={canvas.title}
+              className="w-full object-cover"
+            />
           )}
         </motion.div>
+
+        {/* Camera button - outside the canvas */}
+        {!canvas.isBlank && !cameraGranted && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex justify-center"
+          >
+            {!cameraRequested ? (
+              <button
+                onClick={handleCameraRequest}
+                className="rounded-sm border border-primary/30 bg-card px-8 py-4 font-display text-xs uppercase tracking-[0.2em] text-primary transition-all hover:bg-primary/10 hover:border-glow"
+              >
+                Join this canvas — Enable Camera
+              </button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 animate-spin rounded-full border border-primary/30 border-t-primary" />
+                <p className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  Connecting...
+                </p>
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {/* Inspiration photo */}
         {canvas.inspirationUrl && (
