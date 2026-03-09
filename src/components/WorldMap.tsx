@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import worldMapBg from "@/assets/world-map-bg.png";
 
 interface ConnectedUser {
   id: string;
@@ -38,7 +39,14 @@ const WorldMap = () => {
   const [hoveredUser, setHoveredUser] = useState<string | null>(null);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-sm border border-border bg-card/50 p-8">
+    <div 
+      className="relative w-full overflow-hidden rounded-sm border border-border bg-card/50 p-8"
+      style={{
+        backgroundImage: `url(${worldMapBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <div className="mb-4 flex items-center justify-between">
         <p className="font-display text-xs uppercase tracking-[0.3em] text-muted-foreground">
           The Chain — Connected Users
