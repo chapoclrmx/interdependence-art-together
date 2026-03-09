@@ -21,6 +21,7 @@ const canvasData: Record<string, CanvasData> = {
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1280px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg",
     inspirations: [
       { url: venusHover, author: "Group Alpha", location: "Sydney, Australia" },
+      { url: communityRooftop, author: "Community Collective", location: "Chicago, USA" },
       { url: venusHover, author: "Group Beta", location: "Tokyo, Japan" },
       { url: venusHover, author: "Group Gamma", location: "Cape Town, South Africa" },
     ],
