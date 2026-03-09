@@ -98,7 +98,7 @@ const CanvasView = () => {
   };
 
   return (
-    <div className="min-h-screen px-6 py-8 md:px-12 lg:px-24">
+    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0 }}
