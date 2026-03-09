@@ -98,12 +98,12 @@ const CanvasView = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
+    <div className="min-h-screen px-4 py-6 sm:px-6 sm:py-6 sm:px-6 sm:py-8 md:px-12 lg:px-24">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="mb-12 flex items-center justify-between"
+      8 sm:mb-  className="mb-12 flex items-center justify-between"
       >
         <button
           onClick={() => navigate("/")}
