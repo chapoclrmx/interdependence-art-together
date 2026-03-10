@@ -1,11 +1,20 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import WorldMap from "../components/WorldMap";
 import InspirationCarousel from "../components/InspirationCarousel";
 import CharacterSelect from "../components/CharacterSelect";
 import venusHover from "@/assets/venus-hover.png";
 import communityRooftop from "@/assets/community-rooftop.png";
+import venusLayerGray from "@/assets/layer-grigio-canvas.png";
+import venusColor from "@/assets/La_nascita_di_Venere-venere.png";
+import zephyrColor from "@/assets/La_nascita_di_Venere-zefiro.png";
+import chlorisColor from "@/assets/La_nascita_di_Venere-chloris.png";
+import horaColor from "@/assets/La_nascita_di_Venere-hora.png";
+import contornoVenus from "@/assets/La_nascita_di_Venere-contorno_venere.png";
+import contornoZephyr from "@/assets/La_nascita_di_Venere-contorno_zefiro.png";
+import contornoChloris from "@/assets/La_nascita_di_Venere-contorno_chloris.png";
+import contornoHora from "@/assets/La_nascita_di_Venere-contorno_ore.png";
 
 interface CanvasCharacter {
   id: string;
@@ -66,9 +75,26 @@ const CanvasView = () => {
   const [selectingCharacter, setSelectingCharacter] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<CanvasCharacter | null>(null);
   const [cameraGranted, setCameraGranted] = useState(false);
+  const [cameraLoading, setCameraLoading] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [activeInspirationIndex, setActiveInspirationIndex] = useState(0);
+  const [hoverCharacterId, setHoverCharacterId] = useState<string | null>(null);
+  const [timerSeconds, setTimerSeconds] = useState<number>(0);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const canvas = id ? canvasData[id] : null;
+
+  useEffect(() => {
+    // ensure page starts at top when mounting or when id changes
+    try {
+      window.scrollTo(0, 0);
+    } catch {}
+  }, [id]);
 
   if (!canvas) {
     return (
@@ -85,14 +111,115 @@ const CanvasView = () => {
       setSelectingCharacter(true);
     } else {
       setSelectedCharacter({ id: "default", name: "Participant", description: "", emoji: "📷" });
-      setTimeout(() => setCameraGranted(true), 1500);
+      startCamera();
     }
   };
 
   const handleCharacterSelected = (character: CanvasCharacter) => {
     setSelectingCharacter(false);
     setSelectedCharacter(character);
-    setTimeout(() => setCameraGranted(true), 1500);
+    startCamera();
+  };
+
+  const stopStream = () => {
+    if (stream) {
+      stream.getTracks().forEach((t) => t.stop());
+      setStream(null);
+    }
+    if (videoRef.current) {
+      try {
+        // detach srcObject for cleanup
+        // @ts-ignore
+        videoRef.current.srcObject = null;
+      } catch {}
+    }
+    setCameraActive(false);
+  };
+
+  const startCamera = async () => {
+    setCameraLoading(true);
+    setPhotoDataUrl(null);
+    setConfirmed(false);
+    try {
+      // request camera
+      const s = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      setStream(s);
+      setCameraGranted(true);
+      setCameraActive(true);
+    } catch (err) {
+      console.error("Camera permission denied or error:", err);
+      setCameraGranted(false);
+    } finally {
+      setCameraLoading(false);
+    }
+  };
+
+  // attach stream to video element once React has rendered the <video />
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (!stream || !cameraActive) return;
+    // @ts-ignore
+    videoRef.current.srcObject = stream;
+    const play = async () => {
+      try {
+        await videoRef.current?.play();
+      } catch (e) {
+        // autoplay might be blocked; user can interact to start
+        // console.debug('Video play failed', e);
+      }
+    };
+    play();
+  }, [stream, cameraActive]);
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const takePhoto = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const w = video.videoWidth || 640;
+    const h = video.videoHeight || 480;
+    let canvas = canvasRef.current;
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvasRef.current = canvas;
+    }
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(video, 0, 0, w, h);
+    const dataUrl = canvas.toDataURL('image/png');
+    setPhotoDataUrl(dataUrl);
+    // stop the stream after capture
+    stopStream();
+  };
+
+  // countdown handler for timer-based photo
+  useEffect(() => {
+    if (countdown == null) return;
+    if (countdown <= 0) {
+      setCountdown(null);
+      takePhoto();
+      return;
+    }
+    const id = setTimeout(() => setCountdown((c) => (c ? c - 1 : null)), 1000);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countdown]);
+
+  const retryPhoto = () => {
+    setPhotoDataUrl(null);
+    startCamera();
+  };
+
+  const confirmPhoto = () => {
+    setConfirmed(true);
+    // further behavior (upload/store) can be added here
   };
 
   return (
@@ -136,13 +263,70 @@ const CanvasView = () => {
           className="relative overflow-hidden rounded-sm border border-border"
         >
           {canvas.isBlank ? (
-            <div className="flex aspect-[4/3] sm:aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
+            <div className="relative flex aspect-[4/3] sm:aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
               {selectingCharacter && canvas.characters ? (
-                <CharacterSelect
-                  characters={canvas.characters}
-                  onSelect={handleCharacterSelected}
-                  onBack={() => setSelectingCharacter(false)}
-                />
+                // custom interactive layered selector for Venus
+                id === "venus" ? (
+                  <div className="relative w-full h-full">
+                    {/* base painting */}
+                    <img src={canvas.imageUrl} alt="base" className="absolute inset-0 w-full h-full object-cover" />
+                    {/* gray layer */}
+                    <img src={venusLayerGray} alt="layer" className="absolute inset-0 w-full h-full object-cover opacity-80" />
+
+                    {/* colored preview on hover */}
+                    {hoverCharacterId === "venus" && (
+                      <img src={venusColor} alt="venus" className="absolute inset-0 w-full h-full object-cover" />
+                    )}
+                    {hoverCharacterId === "zephyr" && (
+                      <img src={zephyrColor} alt="zephyr" className="absolute inset-0 w-full h-full object-cover" />
+                    )}
+                    {hoverCharacterId === "chloris" && (
+                      <img src={chlorisColor} alt="chloris" className="absolute inset-0 w-full h-full object-cover" />
+                    )}
+                    {hoverCharacterId === "hora" && (
+                      <img src={horaColor} alt="hora" className="absolute inset-0 w-full h-full object-cover" />
+                    )}
+
+                    {/* clickable hit areas (percentages approximate) */}
+                    <button
+                      aria-label="Select Venus"
+                      onMouseEnter={() => setHoverCharacterId("venus")}
+                      onMouseLeave={() => setHoverCharacterId(null)}
+                      onClick={() => handleCharacterSelected(canvas.characters!.find(c => c.id === "venus")!)}
+                      className="absolute left-[28%] top-[20%] w-[30%] h-[45%] bg-transparent"
+                    />
+
+                    <button
+                      aria-label="Select Zephyr"
+                      onMouseEnter={() => setHoverCharacterId("zephyr")}
+                      onMouseLeave={() => setHoverCharacterId(null)}
+                      onClick={() => handleCharacterSelected(canvas.characters!.find(c => c.id === "zephyr")!)}
+                      className="absolute left-[6%] top-[10%] w-[28%] h-[30%] bg-transparent"
+                    />
+
+                    <button
+                      aria-label="Select Chloris"
+                      onMouseEnter={() => setHoverCharacterId("chloris")}
+                      onMouseLeave={() => setHoverCharacterId(null)}
+                      onClick={() => handleCharacterSelected(canvas.characters!.find(c => c.id === "chloris")!)}
+                      className="absolute left-[18%] top-[32%] w-[20%] h-[25%] bg-transparent"
+                    />
+
+                    <button
+                      aria-label="Select Hora"
+                      onMouseEnter={() => setHoverCharacterId("hora")}
+                      onMouseLeave={() => setHoverCharacterId(null)}
+                      onClick={() => handleCharacterSelected(canvas.characters!.find(c => c.id === "hora")!)}
+                      className="absolute left-[64%] top-[30%] w-[24%] h-[40%] bg-transparent"
+                    />
+                  </div>
+                ) : (
+                  <CharacterSelect
+                    characters={canvas.characters}
+                    onSelect={handleCharacterSelected}
+                    onBack={() => setSelectingCharacter(false)}
+                  />
+                )
               ) : !selectedCharacter ? (
                 <div className="text-center px-4">
                   <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full border border-primary/20">
@@ -163,22 +347,170 @@ const CanvasView = () => {
                     Enable Camera
                   </button>
                 </div>
-              ) : !cameraGranted ? (
+              ) : cameraLoading ? (
                 <div className="text-center">
-                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
                   <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border border-primary/30 border-t-primary" />
                   <p className="font-display text-xs uppercase tracking-wider text-muted-foreground">
-                    Preparing as {selectedCharacter.name}...
+                    Preparing camera as {selectedCharacter?.name}...
                   </p>
+                </div>
+              ) : photoDataUrl ? (
+                <div className="relative text-center px-4 w-full h-full">
+                  <img src={photoDataUrl} alt="Captured" className="w-full h-full object-cover" />
+                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-3">
+                    <button onClick={retryPhoto} className="rounded-full border border-primary/30 bg-card px-4 py-2 font-display text-[10px] sm:text-xs uppercase text-primary">Riprova</button>
+                    <button onClick={confirmPhoto} className="rounded-full border border-primary/30 bg-primary/10 px-4 py-2 font-display text-[10px] sm:text-xs uppercase text-primary">Conferma</button>
+                  </div>
+                </div>
+              ) : cameraActive ? (
+                <div className="relative text-center px-4 w-full h-full">
+                  <span className="sr-only">Camera active for {selectedCharacter?.name}</span>
+                  <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
+
+                  {/* silhouette overlay */}
+                  {selectedCharacter?.id === "venus" && (
+                    <img src={contornoVenus} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "zephyr" && (
+                    <img src={contornoZephyr} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "chloris" && (
+                    <img src={contornoChloris} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "hora" && (
+                    <img src={contornoHora} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+
+                  {/* camera controls: shutter + timer */}
+                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center gap-6">
+                    <button
+                      onClick={() => setTimerSeconds((s) => (s === 0 ? 5 : s === 5 ? 10 : 0))}
+                      className="rounded-full border border-primary/30 bg-card px-3 py-2 text-xs text-primary"
+                      aria-label="Toggle timer"
+                    >
+                      {timerSeconds}s
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (timerSeconds > 0) setCountdown(timerSeconds);
+                        else takePhoto();
+                      }}
+                      className="h-14 w-14 rounded-full bg-primary flex items-center justify-center shadow-md"
+                      aria-label="Take photo"
+                    >
+                      <span className="h-8 w-8 rounded-full bg-white inline-block" />
+                    </button>
+                  </div>
+
+                  {/* countdown overlay */}
+                  {countdown != null && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-6xl font-bold text-white drop-shadow-xl">{countdown}</div>
+                    </div>
+                  )}
+
+                  <canvas ref={canvasRef} className="hidden" />
+                </div>
+              ) : confirmed ? (
+                <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
+                  <p className="font-display text-sm uppercase tracking-wider text-foreground">{selectedCharacter?.name} — foto confermata</p>
                 </div>
               ) : (
                 <div className="text-center">
-                  <span className="mb-2 block text-2xl">{selectedCharacter.emoji}</span>
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <div className="h-3 w-3 rounded-full bg-primary node-pulse" />
                   </div>
                   <p className="font-display text-sm uppercase tracking-wider text-foreground">
-                    You are {selectedCharacter.name}
+                    You are {selectedCharacter?.name}
+                  </p>
+                  <p className="mt-2 font-body text-xs text-muted-foreground">
+                    Strike the pose — the canvas evolves with you
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : ( (cameraActive || photoDataUrl || cameraLoading || confirmed) ? (
+            <div className="relative flex aspect-[4/3] sm:aspect-video items-center justify-center bg-gradient-to-br from-card via-secondary/20 to-card">
+              {cameraLoading ? (
+                <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
+                  <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border border-primary/30 border-t-primary" />
+                  <p className="font-display text-xs uppercase tracking-wider text-muted-foreground">
+                    Preparing camera as {selectedCharacter?.name}...
+                  </p>
+                </div>
+              ) : photoDataUrl ? (
+                <div className="relative text-center px-4 w-full h-full">
+                  <img src={photoDataUrl} alt="Captured" className="w-full h-full object-cover" />
+                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-3">
+                    <button onClick={retryPhoto} className="rounded-full border border-primary/30 bg-card px-4 py-2 font-display text-[10px] sm:text-xs uppercase text-primary">Riprova</button>
+                    <button onClick={confirmPhoto} className="rounded-full border border-primary/30 bg-primary/10 px-4 py-2 font-display text-[10px] sm:text-xs uppercase text-primary">Conferma</button>
+                  </div>
+                </div>
+              ) : cameraActive ? (
+                <div className="relative text-center px-4 w-full h-full">
+                  <span className="sr-only">Camera active for {selectedCharacter?.name}</span>
+                  <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
+
+                  {selectedCharacter?.id === "venus" && (
+                    <img src={contornoVenus} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "zephyr" && (
+                    <img src={contornoZephyr} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "chloris" && (
+                    <img src={contornoChloris} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+                  {selectedCharacter?.id === "hora" && (
+                    <img src={contornoHora} alt="contour" className="pointer-events-none absolute inset-0 w-full h-full object-contain" />
+                  )}
+
+                  <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex items-center gap-6">
+                    <button
+                      onClick={() => setTimerSeconds((s) => (s === 0 ? 5 : s === 5 ? 10 : 0))}
+                      className="rounded-full border border-primary/30 bg-card px-3 py-2 text-xs text-primary"
+                      aria-label="Toggle timer"
+                    >
+                      {timerSeconds}s
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (timerSeconds > 0) setCountdown(timerSeconds);
+                        else takePhoto();
+                      }}
+                      className="h-14 w-14 rounded-full bg-primary flex items-center justify-center shadow-md"
+                      aria-label="Take photo"
+                    >
+                      <span className="h-8 w-8 rounded-full bg-white inline-block" />
+                    </button>
+                  </div>
+
+                  {countdown != null && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-6xl font-bold text-white drop-shadow-xl">{countdown}</div>
+                    </div>
+                  )}
+
+                  <canvas ref={canvasRef} className="hidden" />
+                </div>
+              ) : confirmed ? (
+                <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
+                  <p className="font-display text-sm uppercase tracking-wider text-foreground">{selectedCharacter?.name} — foto confermata</p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <span className="mb-2 block text-2xl">{selectedCharacter?.emoji}</span>
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                    <div className="h-3 w-3 rounded-full bg-primary node-pulse" />
+                  </div>
+                  <p className="font-display text-sm uppercase tracking-wider text-foreground">
+                    You are {selectedCharacter?.name}
                   </p>
                   <p className="mt-2 font-body text-xs text-muted-foreground">
                     Strike the pose — the canvas evolves with you
@@ -192,7 +524,7 @@ const CanvasView = () => {
               alt={canvas.title}
               className="w-full object-cover"
             />
-          )}
+          ))}
         </motion.div>
 
         {/* Character selection or camera button - outside the canvas */}
