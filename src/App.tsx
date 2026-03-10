@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <BrowserRouter basename="/interdependence-art-together">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/canvas/:id" element={<CanvasView />} />
