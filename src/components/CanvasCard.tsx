@@ -10,10 +10,13 @@ interface CanvasCardProps {
   occupied: number;
   total: number;
   isBlank?: boolean;
+  inspirations?: { url: string; author: string; location: string }[];
 }
 
-const CanvasCard = ({ id, title, subtitle, imageUrl, hoverImageUrl, occupied, total, isBlank }: CanvasCardProps) => {
+const CanvasCard = ({ id, title, subtitle, imageUrl, hoverImageUrl, occupied, total, isBlank, inspirations }: CanvasCardProps) => {
   const navigate = useNavigate();
+
+  const effectiveHoverImageUrl = hoverImageUrl || (inspirations && inspirations.length > 0 ? inspirations[0].url : undefined);
 
   return (
     <motion.div
@@ -40,11 +43,11 @@ const CanvasCard = ({ id, title, subtitle, imageUrl, hoverImageUrl, occupied, to
                 <img
                   src={imageUrl}
                   alt={title}
-                  className={`h-full w-full object-cover opacity-70 transition-opacity duration-500 ${hoverImageUrl ? 'group-hover:opacity-0' : 'group-hover:opacity-90'}`}
+                  className={`h-full w-full object-cover opacity-70 transition-opacity duration-500 ${effectiveHoverImageUrl ? 'group-hover:opacity-0' : 'group-hover:opacity-90'}`}
                 />
-                {hoverImageUrl && (
+                {effectiveHoverImageUrl && (
                   <img
-                    src={hoverImageUrl}
+                    src={effectiveHoverImageUrl}
                     alt={`${title} - hover`}
                     className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-90"
                   />

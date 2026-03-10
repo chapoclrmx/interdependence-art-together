@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import CanvasCard from "./CanvasCard";
 import venusHover from "@/assets/venus-hover.png";
+import dukesHover from '@/assets/Piero_della_Francesca_woman_sn.jpg';
 
 const canvases = [
   {
@@ -13,12 +14,13 @@ const canvases = [
     total: 10,
   },
   {
-    id: "nighthawks",
-    title: "Nighthawks",
-    subtitle: "Hopper, 1942 — Missing: The Figures",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg/1280px-Nighthawks_by_Edward_Hopper_1942.jpg",
+    id: "dukes-of-urbino",
+    title: "Ritratto dei Duchi di Urbino",
+    subtitle: "Piero della Francesca, 1465 — Missing: The Dukes",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Piero_della_Francesca_044.jpg/1280px-Piero_della_Francesca_044.jpg",
     occupied: 7,
     total: 10,
+    inspirations: [{ url: dukesHover, author: "User Recreation", location: "Italy" }],
   },
   {
     id: "blank-1",
@@ -58,24 +60,24 @@ const CanvasesSection = () => {
   return (
     <section className="relative px-6 py-32 md:px-12 lg:px-24">
       <div className="mb-20 text-center">
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="font-display text-xs uppercase tracking-[0.5em] text-muted-foreground"
-        >
-          Select a canvas
-        </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-4 font-display text-3xl font-light uppercase tracking-[0.2em] text-foreground md:text-4xl"
+          className="font-display text-3xl font-light uppercase tracking-[0.3em] text-foreground md:text-4xl"
         >
-          The Canvases
+          THE CANVASES
         </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="mx-auto mt-4 max-w-2xl font-body text-sm text-muted-foreground"
+        >
+          Muovi il cursore sulle immagini per ammirare le reinterpretazioni create dagli altri partecipanti.
+        </motion.p>
         <div className="mx-auto mt-6 h-[1px] w-24 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       </div>
 
