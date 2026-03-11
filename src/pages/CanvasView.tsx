@@ -34,7 +34,11 @@ export const canvasData: Record<string, CanvasData> = {
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Piero_della_Francesca_044.jpg/1280px-Piero_della_Francesca_044.jpg",
     inspirations: [{ url: dukesHover, author: "User Recreation", location: "Italy" }],
   },
-  "blank-1": { title: "Untitled #001", subtitle: "Generative · Abstract", isBlank: true },
+  "blank-1": {
+    title: "Triplo ritratto di Carlo I",
+    subtitle: "Anthony van Dyck, 1635 ca.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Sir_Anthony_Van_Dyck_-_Charles_I_%281600-49%29_-_Google_Art_Project.jpg",
+  },
   "last-supper": {
     title: "The Last Supper",
     subtitle: "Da Vinci, 1498",

@@ -1,6 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
+  const { scrollY } = useScroll();
+  const indicatorOpacity = useTransform(scrollY, [0, 250], [1, 0]);
+
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4">
       {/* Subtle ambient gradient */}
@@ -24,6 +27,29 @@ const HeroSection = () => {
           Relying on each other
         </motion.p>
       </div>
+
+      <motion.div
+        animate={{ y: [0, 6, 0] }}
+        transition={{
+          y: { duration: 1.8, repeat: Infinity, ease: "easeInOut" },
+        }}
+        style={{ opacity: indicatorOpacity }}
+        className="absolute bottom-8 left-0 right-0 z-10 mx-auto w-fit flex flex-col items-center gap-2 text-muted-foreground"
+      >
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+        <span className="font-display text-[10px] sm:text-xs tracking-[0.2em] text-center whitespace-nowrap">SCROLL TO EXPLORE</span>
+      </motion.div>
 
     </section>
   );

@@ -17,9 +17,9 @@ const EtymologySection = () => {
       
       <motion.div style={{ opacity, y }} className="max-w-3xl text-center">
         <p className="font-['Georgia',_serif] font-normal text-xl leading-relaxed text-secondary-foreground/80 md:text-xl md:leading-relaxed">
-          In questo spazio l'arte non è un atto isolato.
-          L'interdipendenza è un rapporto di intima connessione e reciproca dipendenza: 
-          l'opera esiste, ma rimane incompleta finché non decidi di partecipare al suo equilibrio.
+          In this space, art is not an isolated act.
+          Interdependence is a relationship of intimate connection and mutual dependence: 
+          the work exists, but remains incomplete until you decide to participate in its balance.
         </p>
       </motion.div>
     </section>

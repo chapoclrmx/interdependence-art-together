@@ -24,11 +24,11 @@ const canvases = [
   },
   {
     id: "blank-1",
-    title: "Untitled #001",
-    subtitle: "Generative · Abstract",
+    title: "Triplo ritratto di Carlo I",
+    subtitle: "Anthony van Dyck, 1635 ca.",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Sir_Anthony_Van_Dyck_-_Charles_I_%281600-49%29_-_Google_Art_Project.jpg",
     occupied: 1,
     total: 8,
-    isBlank: true,
   },
   {
     id: "last-supper",
@@ -67,7 +67,7 @@ const CanvasesSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="font-display text-3xl font-light uppercase tracking-[0.3em] text-foreground md:text-4xl"
         >
-          THE CANVASES
+          THE MASTERPIECES
         </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}
